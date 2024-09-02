@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.alpha.a1.model.UserModel;
-import com.alpha.a1.repository.UserRepository;
+import com.alpha.a1.service.UserService;
 
 import java.util.List;
 
@@ -13,37 +13,30 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
     public List<UserModel> getAllUsers() {
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }   
 
     @GetMapping("/{id}")
     public UserModel getUserById(@PathVariable Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userService.getUserById(id).orElse(null);
     }
 
     @PostMapping
     public UserModel createUser(@RequestBody UserModel user) {
-        return userRepository.save(user);
+        return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
     public UserModel updateUser(@PathVariable Long id, @RequestBody UserModel userDetails) {
-
-        UserModel user = userRepository.findById(id).orElse(null);
-        if (user != null) {
-            user.setName(userDetails.getName());
-            user.setEmail(userDetails.getEmail());
-            return userRepository.save(user);
-        }
-        return null;
+        return userService.updateUser(id, userDetails);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userService.deleteUser(id);
     }
 }
