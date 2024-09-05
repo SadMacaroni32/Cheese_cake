@@ -39,4 +39,10 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+    @PostMapping("/login")
+    public UserModel loginUser(@RequestBody UserModel user) {
+        return userService.loginUser(user.getEmail(), user.getName()).orElse(null);
+    }
+    
 }
